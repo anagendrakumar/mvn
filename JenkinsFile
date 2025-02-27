@@ -1,0 +1,11 @@
+node {
+    stage('Download code from git repo') {
+    git branch: 'dev', url: 'https://github.com/anagendrakumar/mvn.git'
+}
+  stage('convert into artifacts'){
+      sh 'mvn package'
+  }
+  stage('Deploy into container'){
+     deploy adapters: [tomcat9(credentialsId: 'dev-env', path: '', url: 'http://172.31.1.63:8080')], contextPath: '/scripting application', war: '**/*.war'
+  }
+  }
